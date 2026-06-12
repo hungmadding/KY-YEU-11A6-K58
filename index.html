@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kỷ Yếu 11A6 - K58 THPT Tam Dương</title>
+    <style>
+        /* --- CẤU HÌNH CHUNG --- */
+        :root {
+            --bg-color: #0b0f19;
+            --text-color: #ffffff;
+            --accent-color: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- HIỆU ỨNG NỀN LẤP LÁNH (SHIMMERING BACKGROUND) --- */
+        .background-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0b0f19 100%);
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: floatParticle 8s infinite linear;
+            opacity: 0;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* --- TRÌNH PHÁT NHẠC (BACKGROUND MUSIC) --- */
+        .audio-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .audio-player:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .music-icon {
+            width: 20px;
+            height: 20px;
+            fill: #ffffff;
+        }
+
+        .music-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        /* --- HEADER / TIÊU ĐỀ --- */
+        header {
+            text-align: center;
+            padding: 80px 20px 40px 20px;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInPreset 1.2s forwards ease-out;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            font-weight: 300;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInPreset 1.2s 0.3s forwards ease-out;
+        }
+
+        @keyframes fadeInPreset {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- GRID DANH SÁCH THÀNH VIÊN --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .grid-members {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- THẺ THÀNH VIÊN INTERACTIVE (HOVER CARDS) --- */
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            
+            /* Trạng thái ẩn trước khi cuộn trang tới */
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        /* Hiệu ứng tương tác Hover */
+        .member-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .member-card:hover .image-container img {
+            transform: scale(1.08);
+        }
+
+        /* Phần thông tin đẩy lên khi di chuột vào */
+        .info-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(11, 15, 25, 0.95) 0%, rgba(11, 15, 25, 0.4) 70%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transform: translateY(40px);
+            transition: transform 0.4s ease;
+        }
+
+        .member-card:hover .info-overlay {
+            transform: translateY(0);
+        }
+
+        .member-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+
+        .member-role {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .member-quote {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease 0.1s;
+        }
+
+        .member-card:hover .member-quote {
+            opacity: 1;
+        }
+
+        /* --- HIỆU ỨNG CUỘN TRANG (SCROLL ANIMATION CLASS) --- */
+        .member-card.reveal {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-glow" id="bgGlow"></div>
+
+    <div class="audio-player" id="musicBtn">
+        <svg class="music-icon" viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+        <span class="music-text" id="musicStatus">Bật nhạc thanh xuân</span>
+    </div>
+    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <header>
+        <h1>Kỷ Yếu 11A6 - K58</h1>
+        <p>THPT Tam Dương • Nơi thanh xuân gửi lại</p>
+    </header>
+
+    <div class="container">
+        <div class="grid-members" id="gridMembers">
+            
+            <div class="member-card">
+                <div class="image-container">
+                    <img src="https://picsum.photos/400/500?random=1" alt="Thành viên lớp">
+                </div>
+                <div class="info-overlay">
+                    <div class="member-name">Nguyễn Văn A</div>
+                    <div class="member-role">Lớp trưởng gương mẫu</div>
+                    <div class="member-quote">"Học hết mình, chơi nhiệt tình, 11A6 mãi đỉnh!"</div>
+                </div>
+            </div>
+
+            <div class="member-card">
+                <div class="image-container">
+                    <img src="https://picsum.photos/400/500?random=2" alt="Thành viên lớp">
+                </div>
+                <div class="info-overlay">
+                    <div class="member-name">Trần Thị B</div>
+                    <div class="member-role">Cây hài của lớp</div>
+                    <div class="member-quote">"Thanh xuân như một tách trà, ngó qua ngó lại hết bà cấp 3."</div>
+                </div>
+            </div>
+
+            <div class="member-card">
+                <div class="image-container">
+                    <img src="https://picsum.photos/400/500?random=3" alt="Thành viên lớp">
+                </div>
+                <div class="info-overlay">
+                    <div class="member-name">Lê Hoàng C</div>
+                    <div class="member-role">Trùm Tin Học</div>
+                    <div class="member-quote">"Code có thể lỗi, nhưng tình bạn 11A6 thì không bao giờ bug."</div>
+                </div>
+            </div>
+
+            <div class="member-card">
+                <div class="image-container">
+                    <img src="https://picsum.photos/400/500?random=4" alt="Thành viên lớp">
+                </div>
+                <div class="info-overlay">
+                    <div class="member-name">Phạm Minh D</div>
+                    <div class="member-role">Thần đồng Toán học</div>
+                    <div class="member-quote">"Hình học chứng minh ta đồng hành, đại số chứng minh ta là một."</div>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Tập thể 11A6-K58 THPT Tam Dương. Thiết kế bởi hungmadding.</p>
+    </footer>
+
+    <script>
+        // 1. Tạo các hạt sáng bay lấp lánh tự động (Shimmering Particles)
+        const bgGlow = document.getElementById('bgGlow');
+        const particleCount = 40; // Số lượng hạt sáng trên màn hình
+
+        for (let i = 0; i < particleCount; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            
+            // Cấu hình vị trí ngẫu nhiên cho hạt sáng
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.width = star.style.height = `${Math.random() * 4 + 2}px`;
+            star.style.animationDelay = `${Math.random() * 8}s`;
+            star.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            
+            bgGlow.appendChild(star);
+        }
+
+        // 2. Hiệu ứng xuất hiện mượt mà khi cuộn trang tới (Scroll Reveal)
+        const cards = document.querySelectorAll('.member-card');
+        
+        const revealOnScroll = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                    observer.unobserve(entry.target); // Hiện xong thì không cần quét lại nữa để mượt web
+                }
+            });
+        }, {
+            threshold: 0.1 // Chỉ cần thẻ lộ diện 10% là kích hoạt hiệu ứng ngay
+        });
+
+        cards.forEach(card => {
+            revealOnScroll.observe(card);
+        });
+
+        // 3. Trình điều khiển nhạc nền nhẹ nhàng (Fade-in Audio)
+        const musicBtn = document.getElementById('musicBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicStatus = document.getElementById('musicStatus');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (!isPlaying) {
+                bgMusic.volume = 0;
+                bgMusic.play();
+                
+                // Hiệu ứng tiếng nhạc to dần đều (Fade-in)
+                let vol = 0;
+                const fadeInInterval = setInterval(() => {
+                    if (vol < 0.4) { // Âm lượng tối đa là 40% cho vừa phải, êm dịu
+                        vol += 0.05;
+                        bgMusic.volume = vol;
+                    } else {
+                        clearInterval(fadeInInterval);
+                    }
+                }, 100);
+
+                musicStatus.innerText = "Đang phát nhạc...";
+                isPlaying = true;
+            } else {
+                bgMusic.pause();
+                musicStatus.innerText = "Bật nhạc thanh xuân";
+                isPlaying = false;
+            }
+        });
+    </script>
+</body>
+</html>
