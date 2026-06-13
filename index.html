@@ -312,6 +312,31 @@ background-position: center 50%;
             font-size: 0.9rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .menu-bar{
+    margin-top:25px;
+
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.menu-bar button{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    color:white;
+
+    padding:10px 18px;
+    border-radius:30px;
+
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.menu-bar button:hover{
+    background:rgba(255,255,255,0.15);
+    transform:translateY(-2px);
+}
     </style>
 </head>
 <body>
@@ -342,8 +367,16 @@ background-position: center 50%;
     <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
     <header>
-        <h1>Kỷ Yếu 11A6 - K58</h1>
+        
+        <h1>11A6 - K58</h1>
         <p>THPT Tam Dương • Nơi thanh xuân gửi lại</p>
+          <nav class="menu-bar">
+        <button>👥 Cả Lớp</button>
+        <button>👦 Nam</button>
+        <button>👧 Nữ</button>
+        <button>📸 Ảnh Lớp</button>
+        <button>📝 Lưu Bút</button>
+    </nav>
     </header>
 
     <div class="container">
