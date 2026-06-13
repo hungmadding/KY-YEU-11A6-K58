@@ -404,6 +404,39 @@
     </footer>
 
     <script>
+        // ===== LOADING SCREEN =====
+
+const progressBar = document.getElementById("progress-bar");
+const loadingText = document.getElementById("loading-text");
+const enterBtn = document.getElementById("enter-btn");
+
+let progress = 0;
+
+const fakeLoading = setInterval(() => {
+
+    progress++;
+
+    progressBar.style.width = progress + "%";
+    loadingText.innerText = "Đang tải... " + progress + "%";
+
+    if(progress >= 100){
+
+        clearInterval(fakeLoading);
+
+        loadingText.innerText = "✅ Sẵn sàng";
+
+        enterBtn.style.display = "block";
+    }
+
+}, 25);
+
+enterBtn.addEventListener("click", () => {
+
+    document.getElementById("welcome-screen").style.display = "none";
+
+    document.getElementById("main-content").style.display = "block";
+
+});
         // 1. Tạo các hạt sáng bay lấp lánh tự động (Shimmering Particles)
         const bgGlow = document.getElementById('bgGlow');
         const particleCount = 40; // Số lượng hạt sáng trên màn hình
