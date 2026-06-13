@@ -394,12 +394,72 @@ background-position: center 60%;
     cursor:pointer;
     font-size:1rem;
 }
+        #device-select{
+    display:none;
+
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    gap:20px;
+    margin-top:30px;
+
+    color:white;
+    text-align:center;
+}
+
+#device-select p{
+    font-size:1.2rem;
+    font-weight:600;
+}
+
+.device-buttons{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.device-buttons button{
+    padding:15px 25px;
+
+    border:none;
+    border-radius:15px;
+
+    background:rgba(255,255,255,0.1);
+    color:white;
+
+    font-size:1rem;
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.device-buttons button:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,0.15);
+}
     </style>
 </head>
 <body>
     <div id="welcome-screen">
     <h1>🎓 CHÀO MỪNG BẠN ĐẾN VỚI</h1
     <h2>12A6 - K58 - THPT TAM DƯƠNG</h2>
+        <div id="device-select">
+
+    <p>Bạn đang sử dụng thiết bị gì?</p>
+
+    <div class="device-buttons">
+        <button onclick="openDesktop()">
+            💻 Máy tính / iPad
+        </button>
+
+        <button onclick="openMobile()">
+            📱 Điện thoại
+        </button>
+    </div>
+
+</div>
 
     <div class="progress-container">
         <div id="progress-bar"></div>
@@ -522,14 +582,16 @@ const fakeLoading = setInterval(() => {
     progressBar.style.width = progress + "%";
     loadingText.innerText = "Đang tải... " + progress + "%";
 
-    if(progress >= 100){
+if(progress >= 100){
 
-        clearInterval(fakeLoading);
+    clearInterval(fakeLoading);
 
-        loadingText.innerText = "✅ Sẵn sàng";
+    document.querySelector(".progress-container").style.display = "none";
+    document.getElementById("loading-text").style.display = "none";
 
-        enterBtn.style.display = "block";
-    }
+    document.getElementById("device-select").style.display = "flex";
+
+}
 
 }, 25);
 
